@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealership", "CarDealership\CarDealership.csproj", "{C9D4DB35-6D72-4638-8DEE-3C1E650FC98B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealership.Infrastructure", "CarDealership.Infrastructure\CarDealership.Infrastructure.csproj", "{96D003FF-F16E-4ED4-A404-AC1753D0E127}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealership.Core", "CarDealership.Core\CarDealership.Core.csproj", "{02101197-7365-49DD-BD0F-ED14E82643DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C9D4DB35-6D72-4638-8DEE-3C1E650FC98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9D4DB35-6D72-4638-8DEE-3C1E650FC98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9D4DB35-6D72-4638-8DEE-3C1E650FC98B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D003FF-F16E-4ED4-A404-AC1753D0E127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D003FF-F16E-4ED4-A404-AC1753D0E127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D003FF-F16E-4ED4-A404-AC1753D0E127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D003FF-F16E-4ED4-A404-AC1753D0E127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02101197-7365-49DD-BD0F-ED14E82643DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02101197-7365-49DD-BD0F-ED14E82643DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02101197-7365-49DD-BD0F-ED14E82643DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02101197-7365-49DD-BD0F-ED14E82643DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
