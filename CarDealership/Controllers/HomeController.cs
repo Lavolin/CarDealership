@@ -1,17 +1,23 @@
-﻿using CarDealership.Models;
+﻿using CarDealership.Core.Contracts;
+using CarDealership.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CarDealership.Controllers
 {
     public class HomeController : Controller
-    {       
+    {
+        private readonly ICarService carService;
 
-        public IActionResult Index()
+        public HomeController(ICarService _carService) => carService = _carService;
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await carService.LastThreeCars();
+
+            return View(model);
         }
-        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

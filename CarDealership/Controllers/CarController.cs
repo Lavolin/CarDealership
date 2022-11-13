@@ -1,4 +1,5 @@
-﻿using CarDealership.Core.Models.Car;
+﻿using CarDealership.Core.Contracts;
+using CarDealership.Core.Models.Car;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,14 @@ namespace CarDealership.Controllers
     [Authorize]
     public class CarController : Controller
     {
+        private readonly ICarService carService;
+
+        public CarController(
+            ICarService _carService)
+        {
+            carService = _carService;
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> All()
         {
