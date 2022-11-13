@@ -10,14 +10,14 @@ namespace CarDealership.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> All()
         {
-            var model = new CarsViewModel();
+            var model = new CarModel();
 
             return View(model);
         }
 
         public async Task<IActionResult> Mine()
         {
-            var model = new CarsViewModel();
+            var model = new CarModel();
 
             return View(model);
         }
@@ -34,12 +34,47 @@ namespace CarDealership.Controllers
         public async Task<IActionResult> Add() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Add(CarAddModel model)
+        public async Task<IActionResult> Add(CarModel model)
         {
             int id = 1;
 
             return RedirectToAction(nameof(Details), new { id });
-        } 
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = new CarModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, CarModel model)
+        {
+            return RedirectToAction(nameof(Details), new { id });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return RedirectToAction(nameof(All));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Buy(int id)
+        {
+            return RedirectToAction(nameof(Mine));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Sell(int id)
+        {
+            return RedirectToAction(nameof(Mine));
+
+        }
     }
 }
