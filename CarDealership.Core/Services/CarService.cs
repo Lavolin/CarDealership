@@ -10,10 +10,7 @@ namespace CarDealership.Core.Services
     {
         private readonly IRepository repo;
 
-        public CarService(IRepository _repo)
-        {
-            repo = _repo;
-        }
+        public CarService(IRepository _repo) => repo = _repo;
 
         public async Task<IEnumerable<CarHomeModel>> LastThreeCars()
         {
