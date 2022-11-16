@@ -10,9 +10,16 @@ namespace CarDealership.Core.Services
         private readonly IRepository repo;
         public DealerService(IRepository _repo) => repo = _repo;
 
-        public Task Create(string userId, string phoneNumber)
+        public async Task Create(string userId, string phoneNumber)
         {
-            throw new NotImplementedException();
+            var dealer = new Dealer()
+            {
+                UserId = userId,
+                PhoneNumber = phoneNumber
+            };
+
+            await repo.AddAsync(dealer);
+            await repo.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsUserIdAsync(string userId)
@@ -36,6 +43,6 @@ namespace CarDealership.Core.Services
         {
             return await repo.All<Car>()
                  .AnyAsync(u => u.BuyerId == userId);
-        }
+        } 
     }
 }
