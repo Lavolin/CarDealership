@@ -1,5 +1,6 @@
 ﻿using CarDealership.Core.Contracts;
 using CarDealership.Core.Models.Car;
+using CarDealership.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,15 @@ namespace CarDealership.Controllers
     public class CarController : Controller
     {
         private readonly ICarService carService;
+        private readonly IDealerService dealerService;
+
 
         public CarController(
-            ICarService _carService)
+            ICarService _carService, 
+            IDealerService _dealerService)
         {
             carService = _carService;
+            dealerService = _dealerService;
         }
 
         [AllowAnonymous]
@@ -40,12 +45,44 @@ namespace CarDealership.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add() => View();
+        public async Task<IActionResult> Add()
+        {
+            if ((await dealerService.ExistsUserIdAsync(User.Id())) == false)
+            {
+                return RedirectToAction(nameof(DealerController.BeADealer), "Dealer");
+            }
+
+            var model = new CarModel()
+            {
+                CarCategories = await carService.AllCategories()
+            };
+
+            return View(model);
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CarModel model)
+        public async Task<IActionResult> Add(CarModel carModel)
         {
-            int id = 1;
+            if ((await dealerService.ExistsUserIdAsync(User.Id())) == false)
+            {
+                return RedirectToAction(nameof(DealerController.BeADealer), "Dealer");
+            }
+
+            if ((await carService.CategoryExists(carModel.CarCategoryId)) == false)
+            {
+                ModelState.AddModelError(nameof(carModel.CarCategoryId), "Car Category does not exists");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                carModel.CarCategories = await carService.AllCategories();
+
+                return View(carModel);
+            }
+
+            int dealerId = await dealerService.GetDealerId(User.Id());
+
+            int id = await carService.Create(carModel, dealerId);
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -59,7 +96,7 @@ namespace CarDealership.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, CarModel model)
+        public async Task<IActionResult> Edit(int id, CarModel carModel)
         {
             return RedirectToAction(nameof(Details), new { id });
 

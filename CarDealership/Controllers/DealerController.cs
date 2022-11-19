@@ -47,7 +47,7 @@ namespace CarDealership.Controllers
 
             if (await dealerService.ExistUserPhoneAsync(model.Phone))
             {
-                TempData[MessageConstant.ErrorMessage] = "Телефона вече е използван";
+                TempData[MessageConstant.ErrorMessage] = "Телефона ви вече е използван";
 
                 return RedirectToAction("Index", "Home");
             }

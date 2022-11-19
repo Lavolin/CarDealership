@@ -34,10 +34,10 @@ namespace CarDealership.Core.Services
                 .AnyAsync(d => d.PhoneNumber == phoneNum);
         }
 
-        public Task<int> GetDealerId(string userId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<int> GetDealerId(string userId)
+               => (await repo.AllReadonly<Dealer>()
+                 .FirstOrDefaultAsync(d => d.UserId == userId))?.Id ?? 0;
+        
 
         public async Task<bool> UserHasCars(string userId)
         {

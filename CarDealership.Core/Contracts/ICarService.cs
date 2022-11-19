@@ -6,5 +6,12 @@ namespace CarDealership.Core.Contracts
     {
         Task<IEnumerable<CarHomeModel>> LastThreeCars();
 
+        Task<IEnumerable<CarCategoryModel>> AllCategories();
+
+        Task<bool> CategoryExists(int categoryId);
+
+        Task<int> Create(CarModel model, int dealerId);
+
+
     }
 }
