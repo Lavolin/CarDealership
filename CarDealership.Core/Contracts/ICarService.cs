@@ -12,6 +12,13 @@ namespace CarDealership.Core.Contracts
 
         Task<int> Create(CarModel model, int dealerId);
 
+        Task<CarCountModel> All(
+           string? category = null,
+           string? searchTerm = null,
+           CarSorting sorting = CarSorting.Newest,
+           int currentPage = 1,
+           int carPerPage = 3);
 
+        Task<IEnumerable<string>> AllCategoriesNames();
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CarDealership.Core.Contracts;
 using CarDealership.Core.Models.Car;
 using CarDealership.Extensions;
+using CarDealership.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CarDealership.Controllers
 {
@@ -21,12 +23,22 @@ namespace CarDealership.Controllers
             dealerService = _dealerService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery]AllCarsCountModel allCars)
         {
-            var model = new CarModel();
+            var result = await carService.All(
+            allCars.Category,
+            allCars.SearchTerm,
+            allCars.Sorting,
+            allCars.CurrentPage,
+            AllCarsCountModel.CarsPerPage);
 
-            return View(model);
+            allCars.TotalCarsCount = result.TotalCarsCount;
+            allCars.Categories = await carService.AllCategoriesNames();
+            allCars.Cars = result.Cars;
+
+            return View(allCars);
         }
 
         public async Task<IActionResult> Mine()
