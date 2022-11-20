@@ -14,7 +14,7 @@ namespace CarDealership.Core.Models.Car
         [Display(Name = "Price")]
         public decimal Price { get; set; }
 
-        [Display(Name = "Is Bought")]
+        [Display(Name = "Sold")]
         public bool IsBought { get; set; }
     }
 }

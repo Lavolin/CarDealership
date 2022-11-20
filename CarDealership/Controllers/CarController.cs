@@ -43,15 +43,33 @@ namespace CarDealership.Controllers
 
         public async Task<IActionResult> Mine()
         {
-            var model = new CarModel();
+            IEnumerable<CarServiceModel> myCars;
 
-            return View(model);
+            var userId = User.Id();
+
+            if (await dealerService.ExistsUserIdAsync(userId))
+            {
+                int dealerId = await dealerService.GetDealerId(userId);
+                myCars = await carService.AllCarsByDealerId(dealerId);
+            }
+            else
+            {
+                myCars = await carService.AllCarsByUserId(userId);
+            }
+
+            return View(myCars);
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new CarDetailsModel();
+            if (!await carService.Exists(id))
+            {
+                ModelState.AddModelError(nameof(carService.Exists), "Car does not exists");
+                return RedirectToAction(nameof(All));
+            }
+
+            var model = await carService.CarDetailsById(id);
 
             return View(model);
         }

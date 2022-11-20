@@ -20,5 +20,29 @@ namespace CarDealership.Core.Contracts
            int carPerPage = 3);
 
         Task<IEnumerable<string>> AllCategoriesNames();
+
+        Task<IEnumerable<CarServiceModel>> AllCarsByDealerId(int id);
+
+        Task<IEnumerable<CarServiceModel>> AllCarsByUserId(string userId);
+
+        Task<CarDetailsModel> CarDetailsById(int id);
+
+        Task<bool> Exists(int id);
+
+        Task Edit(int carId, CarModel model);
+
+        Task<bool> HasDealerWithId(int carId, string currentUserId);
+
+        Task<int> GetCarCategoryId(int carId);
+
+        Task Delete(int carId);
+
+        Task<bool> IsBought(int carId);
+
+        Task<bool> IsBoughtByUserWithId(int carId, string currentUserId);
+
+        Task Buy(int carId, string currentUserId);
+
+        Task Sell(int carId);
     }
 }

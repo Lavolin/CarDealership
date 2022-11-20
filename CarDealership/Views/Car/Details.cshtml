@@ -6,3 +6,53 @@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" style="width: 20rem;"
+                 src="@Model.ImageUrl" alt="Car Image">
+        </div>
+        <div class="card col-8 border-0">
+            <p style="font-size:25px;"><u>@Model.Model</u></p>            
+            <p>
+                Price:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </p>
+            <p>@Model.Description</p>
+            <p>Category: <b>@Model.Category</b></p>
+            <p><i>(@(Model.IsBought ? "Sold" : "Not Sold"))</i></p>
+            <div class="form-inline">
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-warning" asp-controller="Car" asp-action="Edit"
+                   asp-route-id="@Model.Id">Edit</a>
+                    <a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
+                   asp-route-id="@Model.Id">Delete</a>
+                    @if (!Model.IsBought)
+                    {
+                        <form class="ml-2" asp-controller="Car"
+                      asp-action="Buy" asp-route-id="@Model.Id" method="post">
+                            <input class="btn btn-primary" type="submit" value="Buy" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form class="ml-2" asp-controller="Car" asp-action="Sell"
+                      asp-route-id="@Model.Id" method="post">
+                            <input class="btn btn-primary" type="submit" value="Sell" />
+                        </form>
+                    }
+                }
+            </div>
+            <p></p>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Dealer Info</h5>
+                    <p class="card-text">Email:  @Model.Dealer.Email</p>
+                    <p class="card-text">Phone Number: @Model.Dealer.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

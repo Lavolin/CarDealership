@@ -65,6 +65,36 @@ namespace CarDealership.Core.Services
             return result;
         }
 
+        public async Task<IEnumerable<CarServiceModel>> AllCarsByDealerId(int id)
+        {
+            return await repo.AllReadonly<Car>()
+                .Where(d => d.DealerId == id)
+                .Select(c => new CarServiceModel()
+                {
+                    Id= c.Id,
+                    ImageUrl= c.ImageUrl,
+                    IsBought = c.BuyerId != null,
+                    Price = c.Price,
+                    Model = c.Model
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<CarServiceModel>> AllCarsByUserId(string userId)
+        {
+            return await repo.AllReadonly<Car>()
+                 .Where(d => d.BuyerId == userId)
+                 .Select(c => new CarServiceModel()
+                 {
+                     Id = c.Id,
+                     ImageUrl = c.ImageUrl,
+                     IsBought = c.BuyerId != null,
+                     Price = c.Price,
+                     Model = c.Model
+                 })
+                 .ToListAsync();
+        }
+
         public async Task<IEnumerable<CarCategoryModel>> AllCategories()
         {
             return await repo.AllReadonly<CarCategory>()
@@ -83,6 +113,34 @@ namespace CarDealership.Core.Services
                 .Select(c => c.Name)
                 .Distinct()
                 .ToListAsync();
+        }
+
+        public Task Buy(int carId, string currentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CarDetailsModel> CarDetailsById(int id)
+        {
+            return await repo.AllReadonly<Car>()                
+                .Where(c => c.Id == id)
+                .Select(c => new CarDetailsModel()
+                {                    
+                    Category = c.CarCategory.Name,
+                    Description = c.Description,
+                    Id = id,
+                    ImageUrl = c.ImageUrl,
+                    IsBought = c.BuyerId != null,
+                    Price = c.Price,
+                    Model = c.Model,
+                    Dealer = new Models.Dealer.DealerServiceModel()
+                    {
+                        Email = c.Dealer.User.Email,
+                        PhoneNumber = c.Dealer.PhoneNumber
+                    }
+
+                })
+                .FirstAsync();
         }
 
         public async Task<bool> CategoryExists(int categoryId)
@@ -109,6 +167,48 @@ namespace CarDealership.Core.Services
             return car.Id;
         }
 
+        public Task Delete(int carId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task Edit(int carId, CarModel model)
+        {
+            var car = await repo.GetByIdAsync<Car>(carId);
+
+            car.Description = model.Description;
+            car.ImageUrl = model.ImageUrl;
+            car.Price = model.Price;
+            car.Model = model.Model;            
+            car.CarCategoryId = model.CarCategoryId;
+
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task<bool> Exists(int id)         
+            => await repo.AllReadonly<Car>()
+                         .AnyAsync(c => c.Id == id);
+
+        public Task<int> GetCarCategoryId(int carId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> HasDealerWithId(int carId, string currentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsBought(int carId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsBoughtByUserWithId(int carId, string currentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<CarHomeModel>> LastThreeCars()
         {
             return await repo.AllReadonly<Car>()
@@ -121,6 +221,11 @@ namespace CarDealership.Core.Services
                  })
                  .Take(3)
                  .ToListAsync();
+        }
+
+        public Task Sell(int carId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
