@@ -189,14 +189,23 @@ namespace CarDealership.Core.Services
             => await repo.AllReadonly<Car>()
                          .AnyAsync(c => c.Id == id);
 
-        public Task<int> GetCarCategoryId(int carId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<int> GetCarCategoryId(int carId)
+            => (await repo.GetByIdAsync<Car>(carId)).CarCategoryId;
 
-        public Task<bool> HasDealerWithId(int carId, string currentUserId)
+        public async Task<bool> HasDealerWithId(int carId, string currentUserId)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var car = await repo.AllReadonly<Car>()                
+                .Where(c => c.Id == carId)
+                .Include(c => c.Dealer)
+                .FirstOrDefaultAsync();
+
+            if (car?.Dealer != null && car.Dealer.UserId == currentUserId)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         public Task<bool> IsBought(int carId)

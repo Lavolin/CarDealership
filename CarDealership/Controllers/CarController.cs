@@ -4,6 +4,7 @@ using CarDealership.Extensions;
 using CarDealership.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CarDealership.Controllers
@@ -120,7 +121,29 @@ namespace CarDealership.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = new CarModel();
+            if (!await carService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await carService.HasDealerWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            var car = await carService.CarDetailsById(id);
+            var categoryId = await carService.GetCarCategoryId(id);
+
+            var model = new CarModel()
+            {
+                Id = id,                
+                CarCategoryId = categoryId,
+                Description = car.Description,
+                ImageUrl = car.ImageUrl,
+                Price = car.Price,
+                Model = car.Model,
+                CarCategories = await carService.AllCategories()
+            };
 
             return View(model);
         }
@@ -128,7 +151,41 @@ namespace CarDealership.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, CarModel carModel)
         {
-            return RedirectToAction(nameof(Details), new { id });
+            if (id != carModel.Id)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if (!await carService.Exists(carModel.Id))
+            {
+                ModelState.AddModelError("", "Car does not exist");
+                carModel.CarCategories = await carService.AllCategories();
+
+                return View(carModel);
+            }
+
+            if (!await carService.HasDealerWithId(carModel.Id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if (!await carService.CategoryExists(carModel.CarCategoryId))
+            {
+                ModelState.AddModelError(nameof(carModel.CarCategoryId), "Category does not exist");
+                carModel.CarCategories = await carService.AllCategories();
+
+                return View(carModel);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                carModel.CarCategories = await carService.AllCategories();
+                return View(carModel);
+            }
+
+            await carService.Edit(carModel.Id, carModel);
+
+            return RedirectToAction(nameof(Details), new { carModel.Id });
 
         }
 
