@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+using static CarDealership.Infrastucture.Constants.DataConstants.CarCategory;
 
 namespace CarDealership.Infrastructure.Data
 {
@@ -7,8 +10,9 @@ namespace CarDealership.Infrastructure.Data
         [Key]
         public int Id { get; set; }
 
+        [Comment("Category name")]
         [Required]
-        [StringLength(50)]
+        [StringLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
         public List<Car> Cars { get; set; } = new List<Car>();
