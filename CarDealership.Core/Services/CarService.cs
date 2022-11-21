@@ -1,8 +1,10 @@
-﻿using CarDealership.Core.Contracts;
+﻿using CarDealership.Core.Constants;
+using CarDealership.Core.Contracts;
 using CarDealership.Core.Models.Car;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CarDealership.Core.Services
 {
@@ -20,7 +22,8 @@ namespace CarDealership.Core.Services
         {
             var result = new CarCountModel();
 
-            var cars = repo.AllReadonly<Car>();
+            var cars = repo.AllReadonly<Car>()
+                .Where(c => c.IsActive);
 
             if (string.IsNullOrEmpty(category) == false)
             {
@@ -68,6 +71,7 @@ namespace CarDealership.Core.Services
         public async Task<IEnumerable<CarServiceModel>> AllCarsByDealerId(int id)
         {
             return await repo.AllReadonly<Car>()
+                .Where(c => c.IsActive)
                 .Where(d => d.DealerId == id)
                 .Select(c => new CarServiceModel()
                 {
@@ -83,6 +87,7 @@ namespace CarDealership.Core.Services
         public async Task<IEnumerable<CarServiceModel>> AllCarsByUserId(string userId)
         {
             return await repo.AllReadonly<Car>()
+                 .Where(c => c.IsActive)
                  .Where(d => d.BuyerId == userId)
                  .Select(c => new CarServiceModel()
                  {
@@ -115,14 +120,24 @@ namespace CarDealership.Core.Services
                 .ToListAsync();
         }
 
-        public Task Buy(int carId, string currentUserId)
+        public async Task Buy(int carId, string currentUserId)
         {
-            throw new NotImplementedException();
+            var car = await repo.GetByIdAsync<Car>(carId);
+
+            if (car != null && car.BuyerId != null)
+            {
+                throw new ArgumentException("The car is bought");
+            }
+           
+            car.BuyerId = currentUserId;
+
+            await repo.SaveChangesAsync();
         }
 
         public async Task<CarDetailsModel> CarDetailsById(int id)
         {
-            return await repo.AllReadonly<Car>()                
+            return await repo.AllReadonly<Car>()
+                .Where(c => c.IsActive)
                 .Where(c => c.Id == id)
                 .Select(c => new CarDetailsModel()
                 {                    
@@ -167,9 +182,12 @@ namespace CarDealership.Core.Services
             return car.Id;
         }
 
-        public Task Delete(int carId)
+        public async Task Delete(int carId)
         {
-            throw new NotImplementedException();
+            var car = await repo.GetByIdAsync<Car>(carId);
+            car.IsActive = false;
+
+            await repo.SaveChangesAsync();
         }
 
         public async Task Edit(int carId, CarModel model)
@@ -187,7 +205,7 @@ namespace CarDealership.Core.Services
 
         public async Task<bool> Exists(int id)         
             => await repo.AllReadonly<Car>()
-                         .AnyAsync(c => c.Id == id);
+                         .AnyAsync(c => c.Id == id && c.IsActive);
 
         public async Task<int> GetCarCategoryId(int carId)
             => (await repo.GetByIdAsync<Car>(carId)).CarCategoryId;
@@ -195,7 +213,8 @@ namespace CarDealership.Core.Services
         public async Task<bool> HasDealerWithId(int carId, string currentUserId)
         {
             bool result = false;
-            var car = await repo.AllReadonly<Car>()                
+            var car = await repo.AllReadonly<Car>()
+                .Where(c => c.IsActive)
                 .Where(c => c.Id == carId)
                 .Include(c => c.Dealer)
                 .FirstOrDefaultAsync();
@@ -208,19 +227,31 @@ namespace CarDealership.Core.Services
             return result;
         }
 
-        public Task<bool> IsBought(int carId)
+        public async Task<bool> IsBought(int carId)
         {
-            throw new NotImplementedException();
+            return (await repo.GetByIdAsync<Car>(carId)).BuyerId != null;
         }
 
-        public Task<bool> IsBoughtByUserWithId(int carId, string currentUserId)
+        public async Task<bool> IsBoughtByUserWithId(int carId, string currentUserId)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var car = await repo.AllReadonly<Car>()
+                .Where(c => c.IsActive)
+                .Where(c => c.Id == carId)               
+                .FirstOrDefaultAsync();
+
+            if (car != null && car.BuyerId == currentUserId)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<CarHomeModel>> LastThreeCars()
         {
             return await repo.AllReadonly<Car>()
+                 .Where(c => c.IsActive)
                  .OrderByDescending(c => c.Id)
                  .Select(c => new CarHomeModel() 
                  {
@@ -232,9 +263,13 @@ namespace CarDealership.Core.Services
                  .ToListAsync();
         }
 
-        public Task Sell(int carId)
+        public async Task Sell(int carId)
         {
-            throw new NotImplementedException();
+            var car = await repo.GetByIdAsync<Car>(carId);
+           
+            car.BuyerId = null;
+
+            await repo.SaveChangesAsync();
         }
     }
 }

@@ -48,5 +48,7 @@ namespace CarDealership.Infrastructure.Data
         public string? BuyerId { get; set; }
 
         public IdentityUser? Buyer { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

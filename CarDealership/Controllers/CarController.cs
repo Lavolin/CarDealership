@@ -189,25 +189,88 @@ namespace CarDealership.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            return RedirectToAction(nameof(All));
+            if (!await carService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
 
+            if (!await carService.HasDealerWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            var car = await carService.CarDetailsById(id);
+
+            var model = new CarDetailsViewModel()
+            {
+                Model = car.Model,
+                ImageUrl = car.ImageUrl,                
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, CarDetailsViewModel carModel)
+        {
+            if (!await carService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (!await carService.HasDealerWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            await carService.Delete(id);
+
+            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
         public async Task<IActionResult> Buy(int id)
         {
-            return RedirectToAction(nameof(Mine));
+            if (!await carService.Exists(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
 
+            if (await dealerService.ExistsUserIdAsync(User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if (await carService.IsBought(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            await carService.Buy(id, User.Id());
+
+            return RedirectToAction(nameof(Mine));
         }
 
         [HttpPost]
         public async Task<IActionResult> Sell(int id)
         {
-            return RedirectToAction(nameof(Mine));
+            if (!await carService.Exists(id) ||
+                !await carService.IsBought(id))
+            {
+                return RedirectToAction(nameof(All));
+            }
 
+            if (!await carService.IsBoughtByUserWithId(id, User.Id()))
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            await carService.Sell(id);
+
+            return RedirectToAction(nameof(Mine));
         }
     }
 }
