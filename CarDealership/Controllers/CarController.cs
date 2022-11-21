@@ -239,7 +239,7 @@ namespace CarDealership.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (await dealerService.ExistsUserIdAsync(User.Id()))
+            if (!await dealerService.ExistsUserIdAsync(User.Id()))
             {
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
