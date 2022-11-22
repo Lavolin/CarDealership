@@ -2,6 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
+using static CarDealership.Infrastucture.Constants.DataConstants.Dealer;
+
+
 namespace CarDealership.Infrastructure.Data
 {
     public class Dealer
@@ -10,7 +13,7 @@ namespace CarDealership.Infrastructure.Data
         public int Id { get; set; }
 
         [Required]
-        [StringLength(15)]
+        [StringLength(PhoneNumberLength)]
         public string PhoneNumber { get; set; } = null!;
 
         [Required]

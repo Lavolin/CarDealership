@@ -5,17 +5,7 @@
     /// </summary>
     public static class DataConstants
     {
-        /// <summary>
-        /// Dealer constants
-        /// </summary>
-        public static class Dealer
-        {
-            /// <summary>
-            /// User properties max/min length symbols
-            /// </summary>
-            public const int UserFirstNamelMaxLength = 20;
-            public const int UserLastNamelMaxLength = 20;
-        }
+        
         /// <summary>
         /// Car constants
         /// </summary>
@@ -40,6 +30,39 @@
             public const int NameMaxLength = 50;
         }
 
-        
+        /// <summary>
+        /// Dealer constants
+        /// </summary>
+        public static class Dealer
+        {
+            /// <summary>
+            /// Dealer phone lenght numbers
+            /// </summary>
+            public const int PhoneNumberLength = 15;
+        }
+
+        /// <summary>
+        /// Motor constants
+        /// </summary>
+        public static class Motor
+        {
+            /// <summary>
+            /// Motor properties max/min length symbols
+            /// </summary>
+            public const int ModelMaxLength = 50;
+            public const int DescriptionMaxLength = 500;
+            public const int ImageUrlMaxLength = 200;
+        }
+
+        /// <summary>
+        /// MotorCategory constants
+        /// </summary>
+        public static class MotorCategory
+        {
+            /// <summary>
+            /// MotorCategory properties max/min lenght symbols
+            /// </summary>
+            public const int NameMaxLength = 50;
+        }
     }
 }

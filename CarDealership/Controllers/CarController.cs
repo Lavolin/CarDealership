@@ -1,4 +1,5 @@
-﻿using CarDealership.Core.Contracts;
+﻿using CarDealership.Core.Constants;
+using CarDealership.Core.Contracts;
 using CarDealership.Core.Models.Car;
 using CarDealership.Extensions;
 using CarDealership.Models;
@@ -67,7 +68,9 @@ namespace CarDealership.Controllers
             if (!await carService.Exists(id))
             {
                 ModelState.AddModelError(nameof(carService.Exists), "Car does not exists");
+                TempData[MessageConstant.ErrorMessage] = "Car does not exist";
                 return RedirectToAction(nameof(All));
+
             }
 
             var model = await carService.CarDetailsById(id);
@@ -101,7 +104,9 @@ namespace CarDealership.Controllers
 
             if ((await carService.CategoryExists(carModel.CarCategoryId)) == false)
             {
-                ModelState.AddModelError(nameof(carModel.CarCategoryId), "Car Category does not exists");
+                TempData[MessageConstant.ErrorMessage] = "Car does not exist";
+
+                //ModelState.AddModelError(nameof(carModel.CarCategoryId), "Car Category does not exists");
             }
 
             if (!ModelState.IsValid)
@@ -158,7 +163,9 @@ namespace CarDealership.Controllers
 
             if (!await carService.Exists(carModel.Id))
             {
-                ModelState.AddModelError("", "Car does not exist");
+                TempData[MessageConstant.ErrorMessage] = "Car does not exist";
+
+                //ModelState.AddModelError("", "Car does not exist");
                 carModel.CarCategories = await carService.AllCategories();
 
                 return View(carModel);
@@ -239,10 +246,10 @@ namespace CarDealership.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (!await dealerService.ExistsUserIdAsync(User.Id()))
-            {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
-            }
+            //if (!await dealerService.ExistsUserIdAsync(User.Id()))
+            //{
+            //    return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            //}
 
             if (await carService.IsBought(id))
             {
