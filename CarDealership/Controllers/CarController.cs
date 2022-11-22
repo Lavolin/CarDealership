@@ -5,8 +5,6 @@ using CarDealership.Extensions;
 using CarDealership.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CarDealership.Controllers
 {
@@ -66,9 +64,9 @@ namespace CarDealership.Controllers
         public async Task<IActionResult> Details(int id)
         {
             if (!await carService.Exists(id))
-            {
-                ModelState.AddModelError(nameof(carService.Exists), "Car does not exists");
+            {                
                 TempData[MessageConstant.ErrorMessage] = "Car does not exist";
+
                 return RedirectToAction(nameof(All));
 
             }
@@ -81,7 +79,7 @@ namespace CarDealership.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            if ((await dealerService.ExistsUserIdAsync(User.Id())) == false)
+            if (!await dealerService.ExistsUserIdAsync(User.Id()))
             {
                 return RedirectToAction(nameof(DealerController.BeADealer), "Dealer");
             }
@@ -97,16 +95,14 @@ namespace CarDealership.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CarModel carModel)
         {
-            if ((await dealerService.ExistsUserIdAsync(User.Id())) == false)
+            if (!await dealerService.ExistsUserIdAsync(User.Id()))
             {
                 return RedirectToAction(nameof(DealerController.BeADealer), "Dealer");
             }
 
-            if ((await carService.CategoryExists(carModel.CarCategoryId)) == false)
+            if (!await carService.CategoryExists(carModel.CarCategoryId))
             {
-                TempData[MessageConstant.ErrorMessage] = "Car does not exist";
-
-                //ModelState.AddModelError(nameof(carModel.CarCategoryId), "Car Category does not exists");
+                TempData[MessageConstant.ErrorMessage] = "Car category does not exist";                
             }
 
             if (!ModelState.IsValid)
@@ -164,8 +160,7 @@ namespace CarDealership.Controllers
             if (!await carService.Exists(carModel.Id))
             {
                 TempData[MessageConstant.ErrorMessage] = "Car does not exist";
-
-                //ModelState.AddModelError("", "Car does not exist");
+                
                 carModel.CarCategories = await carService.AllCategories();
 
                 return View(carModel);
@@ -177,8 +172,9 @@ namespace CarDealership.Controllers
             }
 
             if (!await carService.CategoryExists(carModel.CarCategoryId))
-            {
-                ModelState.AddModelError(nameof(carModel.CarCategoryId), "Category does not exist");
+            {                
+                TempData[MessageConstant.ErrorMessage] = "Category does not exist";
+
                 carModel.CarCategories = await carService.AllCategories();
 
                 return View(carModel);

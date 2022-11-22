@@ -64,5 +64,29 @@
             /// </summary>
             public const int NameMaxLength = 50;
         }
+
+        /// <summary>
+        /// Truck constants
+        /// </summary>
+        public static class Truck
+        {
+            /// <summary>
+            /// Truck properties max/min length symbols
+            /// </summary>
+            public const int ModelMaxLength = 50;
+            public const int DescriptionMaxLength = 500;
+            public const int ImageUrlMaxLength = 200;
+        }
+
+        /// <summary>
+        /// TruckCategory constants
+        /// </summary>
+        public static class TruckCategory
+        {
+            /// <summary>
+            /// TruckCategory properties max/min lenght symbols
+            /// </summary>
+            public const int NameMaxLength = 50;
+        }
     }
 }

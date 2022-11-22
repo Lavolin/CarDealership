@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static CarDealership.Core.Constants.ModelConstant.CarModel;
+
 namespace CarDealership.Core.Models.Car
 {
     public class CarModel
@@ -7,12 +9,12 @@ namespace CarDealership.Core.Models.Car
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 2)]
+        [StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]
         public string Model { get; set; } = null!;
 
 
         [Required]
-        [StringLength(500, MinimumLength = 10)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
 
         [Required]        

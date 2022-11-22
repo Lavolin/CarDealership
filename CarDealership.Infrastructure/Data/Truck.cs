@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static CarDealership.Infrastucture.Constants.DataConstants.Truck;
+
+
 namespace CarDealership.Infrastructure.Data
 {
     public class Truck
@@ -12,16 +15,16 @@ namespace CarDealership.Infrastructure.Data
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(ModelMaxLength)]
         public string Model { get; set; } = null!;
 
         
         [Required]
-        [StringLength(500)]
+        [StringLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
         [Required]
-        [StringLength(200)]
+        [StringLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; } = null!;
 
         [Required]
