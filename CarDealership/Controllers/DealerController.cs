@@ -18,7 +18,7 @@ namespace CarDealership.Controllers
         {
             if ((await dealerService.ExistsUserIdAsync(User.Id())))
             {
-                TempData[MessageConstant.ErrorMessage] = "Вие в момента сте дилър";
+                TempData[MessageConstant.ErrorMessage] = "You are a Dealer";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -40,14 +40,14 @@ namespace CarDealership.Controllers
 
             if (await dealerService.ExistsUserIdAsync(userId))
             {
-                TempData[MessageConstant.ErrorMessage] = "Вие в момента сте дилър";
+                TempData[MessageConstant.ErrorMessage] = "You are a Dealer";
 
                 return RedirectToAction("Index", "Home");
             }
 
             if (await dealerService.ExistUserPhoneAsync(model.Phone))
             {
-                TempData[MessageConstant.ErrorMessage] = "Телефона ви вече е използван";
+                TempData[MessageConstant.ErrorMessage] = "Your phone is already used";
 
                 return RedirectToAction("Index", "Home");
             }
