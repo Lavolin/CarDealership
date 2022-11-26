@@ -1,10 +1,8 @@
-﻿using CarDealership.Core.Constants;
-using CarDealership.Core.Contracts;
+﻿using CarDealership.Core.Contracts;
 using CarDealership.Core.Models.Car;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace CarDealership.Core.Services
 {
