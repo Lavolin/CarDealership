@@ -13,7 +13,7 @@ namespace CarDealership.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = await carService.LastThreeCars();
+            var model = await carService.LastFiveCars();
 
             return View(model);
         }

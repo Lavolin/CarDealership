@@ -4,7 +4,7 @@ namespace CarDealership.Core.Contracts
 {
     public interface ICarService
     {
-        Task<IEnumerable<CarHomeModel>> LastThreeCars();
+        Task<IEnumerable<CarHomeModel>> LastFiveCars();
 
         Task<IEnumerable<CarCategoryModel>> AllCategories();
 

@@ -248,7 +248,7 @@ namespace CarDealership.Core.Services
             return result;
         }
 
-        public async Task<IEnumerable<CarHomeModel>> LastThreeCars()
+        public async Task<IEnumerable<CarHomeModel>> LastFiveCars()
         {
             return await repo.AllReadonly<Car>()
                  .Where(c => c.IsActive)
@@ -259,7 +259,7 @@ namespace CarDealership.Core.Services
                      ImageUrl= c.ImageUrl,
                      Model = c.Model
                  })
-                 .Take(3)
+                 .Take(5)
                  .ToListAsync();
         }
 
