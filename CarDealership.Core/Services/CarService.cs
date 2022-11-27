@@ -26,7 +26,7 @@ namespace CarDealership.Core.Services
             if (string.IsNullOrEmpty(category) == false)
             {
                 cars = cars
-                    .Where(h => h.CarCategory.Name == category);
+                    .Where(c => c.CarCategory.Name == category);
             }
 
             if (string.IsNullOrEmpty(searchTerm) == false)
