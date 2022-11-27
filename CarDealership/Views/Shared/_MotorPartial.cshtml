@@ -1,0 +1,40 @@
+﻿@model MotorServiceModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Motor Image">
+        <div class="card-body text-center">
+            <h4>@Model.Model</h4>
+            <h6>
+                Price:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </h6>
+            <h6>@(Model.IsBought ? "Sold" : "Not Bought")</h6>
+            <br />
+            <a asp-controller="Motor" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-success">Details</a>
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Motor" asp-action="Edit" asp-route-id="@Model.Id"
+               class="btn btn-warning">Edit</a>
+                <a asp-controller="Motor" asp-action="Delete" asp-route-id="@Model.Id"
+               class="btn btn-danger">Delete</a>
+                <p></p>
+                @if (!Model.IsBought)
+                {
+                    <form class="input-group-sm" asp-controller="Motor"
+                  asp-action="Buy" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Buy" />
+                    </form>
+                }
+                @*else
+            {
+            <form asp-controller="Motor" asp-action="Sell"
+            asp-route-id="@Model.Id" method="post">
+            <input class="btn btn-primary" type="submit" value="Sell" />
+            </form>
+            }*@
+            }
+        </div>
+    </div>
+</div>
