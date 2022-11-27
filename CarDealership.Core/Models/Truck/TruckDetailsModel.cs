@@ -2,7 +2,7 @@
 
 namespace CarDealership.Core.Models.Truck
 {
-    public class TruckDetailsModel
+    public class TruckDetailsModel : TruckServiceModel
     {
         public string Description { get; set; } = null!;
 

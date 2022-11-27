@@ -2,7 +2,7 @@
 
 namespace CarDealership.Core.Models.Motor
 {
-    public class MotorDetailsModel
+    public class MotorDetailsModel : MotorServiceModel
     {
         public string Description { get; set; } = null!;
 

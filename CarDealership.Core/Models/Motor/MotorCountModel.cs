@@ -2,7 +2,7 @@
 {
     public class MotorCountModel
     {
-        public int TotalCarsCount { get; set; }
+        public int TotalMotorsCount { get; set; }
 
         public IEnumerable<MotorServiceModel> Motors { get; set; } = new List<MotorServiceModel>();
     }

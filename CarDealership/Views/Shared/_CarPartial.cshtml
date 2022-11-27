@@ -9,7 +9,7 @@
                 Price:
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </h6>
-            <h6>@(Model.IsBought ? "Sold" : "Not Bought")</h6>
+            <h6>@Model.IsBought ? "Sold" : "Not Bought"</h6>
             <br />
             <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>
