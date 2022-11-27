@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarDealership.Controllers
 {
+    [Authorize]
     public class MotorController : Controller
     {
         private readonly IMotorService motorService;
