@@ -127,7 +127,7 @@ namespace CarDealership.Core.Services
                 throw new ArgumentException("The car is bought");
             }
            
-            car.BuyerId = currentUserId;
+            car.BuyerId = currentUserId;            
 
             await repo.SaveChangesAsync();
         }
