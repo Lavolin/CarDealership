@@ -1,5 +1,22 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<TruckServiceModel>
+
 @{
+    ViewBag.Title = "My Trucks"; 
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (Model.Any())
+{
+        <div class="row">
+        @foreach (var truck in Model)
+        {
+                    <partial name="_TruckPartial" model="@truck" />
+        }
+        </div>
+}
+else
+{
+        <h3 class="text-center">You have no cars!</h3>
 }
