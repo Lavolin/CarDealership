@@ -21,24 +21,48 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Car" asp-action="All">Cars</a>
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cars
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Car" asp-action="All">Cars</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Motor" asp-action="All">Motors</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Truck" asp-action="All">Trucks</a></li>
+                            </ul>
                         </li>
                         @if (this.User?.Identity != null && this.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Car" asp-action="Mine">My Cars</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Cars
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Car" asp-action="Mine">Cars</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Motor" asp-action="Mine">Motors</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Truck" asp-action="Mine">Trucks</a></li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Car" asp-action="Add">Add Car</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Add
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Car" asp-action="Add">Cars</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Motor" asp-action="Add">Motors</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Truck" asp-action="Add">Trucks</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Dealer" asp-action="BeADealer">Be a Dealer</a>
                             </li>
                         }
                     </ul>
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    
                     <partial name="_LoginPartial" />
                 </div>
             </div>
