@@ -4,6 +4,6 @@
     {
         public const string AreaName = "Admin";
         public const string AdminRoleName = "Administrator";
-        public const string AdminEmail = "Administrator";
+        public const string AdminEmail = "admin@admin.bg";
     }
 }

@@ -2,6 +2,7 @@
 using CarDealership.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using static CarDealership.Areas.Admin.Constants.AdminConstants;
 
 namespace CarDealership.Controllers
 {
@@ -13,6 +14,10 @@ namespace CarDealership.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole(AdminRoleName))
+            {
+                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+            }
             var model = await carService.LastFiveCars();
 
             return View(model);
