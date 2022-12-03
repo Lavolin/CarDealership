@@ -20,6 +20,6 @@ namespace CarDealership.Infrastructure.Data
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = null!;
 
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
     }
 }

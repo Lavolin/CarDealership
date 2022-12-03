@@ -46,7 +46,7 @@ namespace CarDealership.Infrastructure.Data
         [ForeignKey(nameof(Buyer))]
         public string? BuyerId { get; set; }
 
-        public IdentityUser? Buyer { get; set; }
+        public ApplicationUser? Buyer { get; set; }
 
         public bool IsActive { get; set; } = true;
 
