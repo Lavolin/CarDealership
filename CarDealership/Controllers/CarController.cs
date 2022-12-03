@@ -5,6 +5,7 @@ using CarDealership.Extensions;
 using CarDealership.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static CarDealership.Areas.Admin.Constants.AdminConstants;
 
 namespace CarDealership.Controllers
 {
@@ -43,6 +44,11 @@ namespace CarDealership.Controllers
 
         public async Task<IActionResult> Mine()
         {
+            if (User.IsInRole(AdminRoleName))
+            {
+                return RedirectToAction("Mine", "Car", new { area = AreaName });
+            }
+
             IEnumerable<CarServiceModel> myCars;
 
             var userId = User.Id();
