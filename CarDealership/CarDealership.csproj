@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\Motor\" />
+    <Folder Include="Areas\Admin\Views\Truck\" />
   </ItemGroup>
 
 </Project>

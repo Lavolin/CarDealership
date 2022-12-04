@@ -5,29 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarDealership.Areas.Admin.Controllers
 {
-    public class CarController : BaseController
+    public class MotorController : BaseController
     {
-        private readonly ICarService carService;
+        private readonly IMotorService motorService;
 
         private readonly IDealerService dealerService;
 
-        public CarController(
-            ICarService _carService,
+        public MotorController(
+            IMotorService _motorService, 
             IDealerService _dealerService)
         {
-            carService = _carService;
+            motorService = _motorService;
             dealerService = _dealerService;
         }
 
         public async Task<IActionResult> Mine()
         {
-            var myCars = new MyCarsViewModel();
+            var myMotors = new MyMotorsViewModel();
             var adminId = User.Id();
-            myCars.SoldCars = await carService.AllCarsByUserId(adminId);
+            myMotors.SoldMotors = await motorService.AllMotorsByUserId(adminId);
             var dealerId = await dealerService.GetDealerId(adminId);
-            myCars.AddedCars = await carService.AllCarsByDealerId(dealerId);
+            myMotors.AddedMotors = await motorService.AllMotorsByDealerId(dealerId);
 
-            return View(myCars);
+            return View(myMotors);
         }
     }
 }
