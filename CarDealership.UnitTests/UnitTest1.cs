@@ -5,6 +5,7 @@ namespace CarDealership.UnitTests
         [SetUp]
         public void Setup()
         {
+
         }
 
         [Test]

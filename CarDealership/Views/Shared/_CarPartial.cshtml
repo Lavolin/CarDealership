@@ -1,4 +1,6 @@
 ﻿@model CarServiceModel
+@inject ICarService cars
+@inject IDealerService dealers
 
 <div class="col-md-4">
     <div class="card mb-3">
@@ -15,19 +17,22 @@
                class="btn btn-success">Details</a>
             @if (this.User.Identity.IsAuthenticated)
             {
+                @if(await this.cars.HasDealerWithId(Model.Id, this.User.Id()))
+                {
                 <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id"
                class="btn btn-warning">Edit</a>
                 <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id"
                class="btn btn-danger">Delete</a>
+                }
                 <p></p>
-                @if (!Model.IsBought)
+                @if (!Model.IsBought && await this.dealers.ExistsUserIdAsync(this.User.Id()) == false)
                 {
                     <form class="input-group-sm" asp-area="" asp-controller="Car"
                   asp-action="Buy" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Buy" />
                     </form>
                 }
-                else
+                else if (await this.cars.IsBoughtByUserWithId(Model.Id, this.User.Id()))
                 {
                     <form asp-area="" asp-controller="Car" asp-action="Sell"
                   asp-route-id="@Model.Id" method="post">
