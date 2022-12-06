@@ -25,7 +25,7 @@
                class="btn btn-danger">Delete</a>
                 }
                 <p></p>
-                @if (!Model.IsBought && await this.dealers.ExistsUserIdAsync(this.User.Id()) == false)
+                @if (!Model.IsBought && await this.dealers.ExistsUserIdAsync(this.User.Id()))
                 {
                     <form class="input-group-sm" asp-area="" asp-controller="Car"
                   asp-action="Buy" asp-route-id="@Model.Id" method="post">

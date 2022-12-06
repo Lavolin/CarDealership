@@ -1,4 +1,6 @@
 ﻿@model TruckServiceModel
+@inject ITruckService trucks
+@inject IDealerService dealers
 
 <div class="col-md-4">
     <div class="card mb-3">
@@ -15,25 +17,28 @@
                class="btn btn-success">Details</a>
             @if (this.User.Identity.IsAuthenticated)
             {
+                @if (await this.trucks.HasDealerWithId(Model.Id, this.User.Id()))
+                {
                 <a asp-controller="Truck" asp-action="Edit" asp-route-id="@Model.Id"
                class="btn btn-warning">Edit</a>
                 <a asp-controller="Truck" asp-action="Delete" asp-route-id="@Model.Id"
                class="btn btn-danger">Delete</a>
+                }
                 <p></p>
-                @if (!Model.IsBought)
+                @if (!Model.IsBought && await this.dealers.ExistsUserIdAsync(this.User.Id()))
                 {
                     <form class="input-group-sm" asp-controller="Truck"
                   asp-action="Buy" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Buy" />
                     </form>
                 }
-                @*else
-            {
-            <form asp-controller="Truck" asp-action="Sell"
-            asp-route-id="@Model.Id" method="post">
-            <input class="btn btn-primary" type="submit" value="Sell" />
-            </form>
-            }*@
+                else if (await this.trucks.IsBoughtByUserWithId(Model.Id, this.User.Id()))
+                {
+                <form asp-controller="Truck" asp-action="Sell"
+                asp-route-id="@Model.Id" method="post">
+                <input class="btn btn-primary" type="submit" value="Sell" />
+                </form>
+                }
             }
         </div>
     </div>

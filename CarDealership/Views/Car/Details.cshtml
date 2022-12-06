@@ -1,4 +1,7 @@
 ﻿@model CarDetailsModel
+@inject ICarService cars
+@inject IDealerService dealers
+
 
 @{
     ViewBag.Title = "Cars Details"; 
@@ -25,18 +28,22 @@
             <div class="form-inline">
                 @if (this.User.Identity.IsAuthenticated)
                 {
+                    @if (await this.cars.HasDealerWithId(Model.Id, this.User.Id()))
+                    {
                     <a class="btn btn-warning" asp-controller="Car" asp-action="Edit"
                    asp-route-id="@Model.Id">Edit</a>
                     <a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
                    asp-route-id="@Model.Id">Delete</a>
-                    @if (!Model.IsBought)
+                    }
+
+                    @if (!Model.IsBought && await this.dealers.ExistsUserIdAsync(this.User.Id()))
                     {
                         <form class="ml-2" asp-controller="Car"
                       asp-action="Buy" asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit" value="Buy" />
                         </form>
                     }
-                    else
+                    else if (await this.cars.IsBoughtByUserWithId(Model.Id, this.User.Id()))
                     {
                         <form class="ml-2" asp-controller="Car" asp-action="Sell"
                       asp-route-id="@Model.Id" method="post">
