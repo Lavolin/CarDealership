@@ -7,5 +7,7 @@ namespace CarDealership.Core.Contracts.Admin
         Task<string> UserFullName(string userId);
 
         Task<IEnumerable<UserServiceModel>> All();
+
+        Task<bool> Clear(string userId);
     }
 }

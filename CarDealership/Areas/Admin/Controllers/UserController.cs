@@ -1,4 +1,5 @@
-﻿using CarDealership.Core.Contracts.Admin;
+﻿using CarDealership.Core.Constants;
+using CarDealership.Core.Contracts.Admin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarDealership.Areas.Admin.Controllers
@@ -17,6 +18,23 @@ namespace CarDealership.Areas.Admin.Controllers
             var model = await userService.All();
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Clear(string userId)
+        {
+            bool result = await userService.Clear(userId);
+
+            if (result)
+            {
+                TempData[MessageConstant.SuccessMessage] = "User is deleted";
+            }
+            else
+            {
+                TempData[MessageConstant.ErrorMessage] = "Something is wrong";
+            }
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

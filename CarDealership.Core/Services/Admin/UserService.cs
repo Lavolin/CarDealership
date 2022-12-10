@@ -2,6 +2,7 @@
 using CarDealership.Core.Models.Admin;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarDealership.Core.Services.Admin
@@ -9,10 +10,13 @@ namespace CarDealership.Core.Services.Admin
     public class UserService : IUserService
     {
         private readonly IRepository repo;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public UserService(IRepository _repo)
+        public UserService(IRepository _repo, 
+            UserManager<ApplicationUser> _userManager)
         {
             repo = _repo;
+            userManager = _userManager;
         }
 
         public async Task<IEnumerable<UserServiceModel>> All()
@@ -20,11 +24,11 @@ namespace CarDealership.Core.Services.Admin
             List<UserServiceModel> result;
 
             result = await repo.AllReadonly<Dealer>()
+                .Where(a => a.User.IsActive)
                 .Select(d => new UserServiceModel()
                 {
                     UserId = d.UserId,
-                    Email = d.User.Email,
-                    FullName = $"{d.User.FirstName} {d.User.LastName}",
+                    Email = d.User.Email,                    
                     PhoneNumber = d.PhoneNumber
                 })
                 .ToListAsync();
@@ -33,11 +37,11 @@ namespace CarDealership.Core.Services.Admin
 
             result.AddRange(await repo.AllReadonly<ApplicationUser>()
                 .Where(d => dealerIds.Contains(d.Id) == false)
+                .Where(u => u.IsActive)
                 .Select(d => new UserServiceModel()
                 {
                     UserId = d.Id,
-                    Email = d.Email,
-                    FullName = $"{d.FirstName} {d.LastName}"
+                    Email = d.Email,                    
                 }).ToListAsync());
 
             return result;
@@ -48,6 +52,25 @@ namespace CarDealership.Core.Services.Admin
             var user = await repo.GetByIdAsync<ApplicationUser>(userId);
 
             return $"{user?.FirstName} {user?.LastName}".Trim();
+        }
+
+        public async Task<bool> Clear(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            user.PhoneNumber = null;
+            user.FirstName = null;
+            user.Email = null;
+            user.IsActive = false;
+            user.LastName = null;
+            user.NormalizedEmail = null;
+            user.NormalizedUserName = null;
+            user.PasswordHash = null;
+            user.UserName = "UserIsDeleted";
+
+            var result = await userManager.UpdateAsync(user);
+
+            return result.Succeeded;
         }
     }
 }
