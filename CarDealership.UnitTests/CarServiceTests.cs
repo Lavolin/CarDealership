@@ -1,6 +1,7 @@
 ﻿using CarDealership.Core.Contracts;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarDealership.UnitTests
 {
@@ -9,13 +10,20 @@ namespace CarDealership.UnitTests
     {
         private IRepository repo;
         private ICarService carService;
-        private ApplicationDbContext applicationDbContext;
+        private ApplicationDbContext context;
 
 
         [SetUp]
         public void Setup()
         {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+               .UseInMemoryDatabase("CarDealershipDB")
+               .Options;
 
+            context = new ApplicationDbContext(options);
+
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
         }
 
         [Test]
@@ -27,7 +35,7 @@ namespace CarDealership.UnitTests
         [TearDown]
         public void TearDown()
         {
-
+            context.Dispose();
         }
     }
 }

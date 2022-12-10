@@ -10,19 +10,17 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th><label>Email</label></th>
-            @*<th><label>Full Name</label></th>*@
+            <th><label>Email</label></th>            
             <th><label>Phone Number</label></th>
             <th><label>User Is Agent</label></th>
-            <th><label>Actions</label></th>
+            <th><label>Delete User</label></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
-                <td><label>@user.Email</label></td>
-                @*<td><label>@user.FullName</label></td>*@
+                <td><label>@user.Email</label></td>               
                 <td><label>@user.PhoneNumber</label></td>
                 <td>
                     @if (string.IsNullOrEmpty(user.PhoneNumber) == false)
@@ -35,8 +33,7 @@
                     }
                 </td>
                 <td>
-                    <form asp-area="Admin" asp-controller="User" asp-action="Clear" asp-route-userId="@user.UserId" method="post">
-                        @*<input type="hidden" value="@user.UserId">*@
+                    <form asp-area="Admin" asp-controller="User" asp-action="Clear" asp-route-userId="@user.UserId" method="post">                        
                         <button type="submit" class="btn btn-danger">Clear</button>
                     </form>
                 </td>
