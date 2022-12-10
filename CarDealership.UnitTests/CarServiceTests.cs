@@ -1,4 +1,5 @@
 ﻿using CarDealership.Core.Contracts;
+using CarDealership.Core.Services;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +28,21 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
-        public void Test1()
+        public async Task TestCategory()
         {
-            Assert.Pass();
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = ""}
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.LastFiveCars();
+           
+           Assert.That(1, Is.EqualTo(result.Count()));
         }
 
         [TearDown]
