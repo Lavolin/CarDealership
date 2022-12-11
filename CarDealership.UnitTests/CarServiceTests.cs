@@ -53,6 +53,93 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
+        public async Task AllCarsByDealerId()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = "", DealerId = 1, IsActive = true},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = "", DealerId = 1, IsActive = true},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = "", DealerId = 2, IsActive = true}           
+                
+
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.AllCarsByDealerId(1);
+
+            Assert.That(2, Is.EqualTo(result.Count()));            
+        }
+
+        [Test]
+        public async Task AllCarsByUserId()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = "", BuyerId = "2", IsActive = true}
+
+
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.AllCarsByUserId("1");
+            Assert.That(2, Is.EqualTo(result.Count()));
+
+        }
+
+        [Test]
+        public async Task TestAllCategories()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+            await repo.AddRangeAsync(new List<CarCategory>()
+            {
+                new CarCategory { Id =1, Name = "1"}
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.AllCategories();
+            Assert.That(1, Is.EqualTo(result.Count()));
+
+            var resultCatNames = await carService.AllCategoriesNames();
+            Assert.That(resultCatNames, Is.Not.Null);
+
+        }
+
+        [Test]
+        public async Task TestBuy()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = "", BuyerId = "2", IsActive = true}
+
+
+            });
+
+            await repo.SaveChangesAsync();
+
+            Assert.Throws<ArgumentException>(() => carService.Buy(1, "2"));
+            
+
+            
+        }
+
+        [Test]
         public async Task TestLastFive()
         {
             var repo = new Repository(context);
