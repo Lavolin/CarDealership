@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarDealership\CarDealership.csproj" />
+    <ProjectReference Include="..\CarDealership.Core\CarDealership.Core.csproj" />
   </ItemGroup>
 
 </Project>

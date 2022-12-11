@@ -117,27 +117,48 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
-        public async Task TestBuy()
+        public async Task TestCategoryExists()
         {
             var repo = new Repository(context);
             carService = new CarService(repo);
-
             await repo.AddRangeAsync(new List<Car>()
             {
-                new Car { Id = 1, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
-                new Car { Id = 2, Model = "", Description = "", ImageUrl = "", BuyerId = "1", IsActive = true},
-                new Car { Id = 3, Model = "", Description = "", ImageUrl = "", BuyerId = "2", IsActive = true}
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = "", DealerId = 1, IsActive = true},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = "", DealerId = 1, IsActive = true},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = "", DealerId = 2, IsActive = true}
 
 
+            });
+            await repo.SaveChangesAsync();
+
+            await repo.AddRangeAsync(new List<CarCategory>()
+            {
+                new CarCategory { Id =1, Name = "1"}
             });
 
             await repo.SaveChangesAsync();
 
-            Assert.Throws<ArgumentException>(() => carService.Buy(1, "2"));
-            
+            var catId = await carService.GetCarCategoryId(1);
+            var result = await carService.CategoryExists(catId);
 
-            
+            Assert.That(result, Is.False);
         }
+
+        //[Test]
+        //public async Task TestCreate()
+        //{
+        //    var repo = new Repository(context);
+        //    carService = new CarService(repo);
+
+        //    var car = new Car { Model = "", CarCategoryId = 1, Description = "", ImageUrl = "", DealerId = 1, Price = 1.00m, BuyerId = "1" };
+        //    var dealer = new Dealer { Id = 1, PhoneNumber = "" };
+        //    await repo.AddAsync(car);
+        //    await repo.AddAsync(dealer);
+
+        //    await carService.Create(car, dealer.Id);
+        //   await repo.SaveChangesAsync();
+        //    Assert.That(carService, Is.Not.Null);
+        //}
 
         [Test]
         public async Task TestLastFive()
