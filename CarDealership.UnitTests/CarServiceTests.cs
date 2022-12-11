@@ -28,21 +28,54 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
-        public async Task TestCategory()
+        public async Task TestAll()
         {
             var repo = new Repository(context);
             carService = new CarService(repo);
 
             await repo.AddRangeAsync(new List<Car>()
             {
-                new Car { Id = 1, Model = "", Description = "", ImageUrl = ""}
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 4, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 5, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 6, Model = "", Description = "", ImageUrl = ""},
+
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.All();
+
+           
+            Assert.That(3, Is.EqualTo(result.Cars.Count()));
+        }
+
+        [Test]
+        public async Task TestLastFive()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 4, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 5, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 6, Model = "", Description = "", ImageUrl = ""},
+
             });
 
             await repo.SaveChangesAsync();
 
             var result = await carService.LastFiveCars();
            
-           Assert.That(1, Is.EqualTo(result.Count()));
+           Assert.That(5, Is.EqualTo(result.Count()));
+           Assert.That(result.Any(c => c.Id == 1), Is.False);
+
         }
 
         [TearDown]
