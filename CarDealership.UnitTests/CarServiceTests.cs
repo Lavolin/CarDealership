@@ -1,8 +1,10 @@
 ﻿using CarDealership.Core.Contracts;
+using CarDealership.Core.Models.Car;
 using CarDealership.Core.Services;
 using CarDealership.Infrastructure.Data;
 using CarDealership.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace CarDealership.UnitTests
 {
@@ -173,7 +175,7 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
-        public async Task TestExists()
+        public async Task TestExists_IsBought()
         {
             var repo = new Repository(context);
             carService = new CarService(repo);
@@ -197,6 +199,22 @@ namespace CarDealership.UnitTests
 
             var result1 = await carService.Exists(7);
             Assert.That(result1, Is.False);
+
+            var result3 = await carService.IsBought(2);
+
+            Assert.That(result3, Is.False);
+        }
+
+        [Test]
+        public async Task TestDelete()
+        {
+
+        }
+
+
+        [Test]
+        public async Task TestIsBought()
+        {
 
         }
 
