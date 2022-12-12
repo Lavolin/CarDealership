@@ -144,21 +144,7 @@ namespace CarDealership.UnitTests
             Assert.That(result, Is.False);
         }
 
-        //[Test]
-        //public async Task TestCreate()
-        //{
-        //    var repo = new Repository(context);
-        //    carService = new CarService(repo);
-
-        //    var car = new Car { Model = "", CarCategoryId = 1, Description = "", ImageUrl = "", DealerId = 1, Price = 1.00m, BuyerId = "1" };
-        //    var dealer = new Dealer { Id = 1, PhoneNumber = "" };
-        //    await repo.AddAsync(car);
-        //    await repo.AddAsync(dealer);
-
-        //    await carService.Create(car, dealer.Id);
-        //   await repo.SaveChangesAsync();
-        //    Assert.That(carService, Is.Not.Null);
-        //}
+       
 
         [Test]
         public async Task TestLastFive()
@@ -183,6 +169,34 @@ namespace CarDealership.UnitTests
            
            Assert.That(5, Is.EqualTo(result.Count()));
            Assert.That(result.Any(c => c.Id == 1), Is.False);
+
+        }
+
+        [Test]
+        public async Task TestExists()
+        {
+            var repo = new Repository(context);
+            carService = new CarService(repo);
+
+            await repo.AddRangeAsync(new List<Car>()
+            {
+                new Car { Id = 1, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 2, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 3, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 4, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 5, Model = "", Description = "", ImageUrl = ""},
+                new Car { Id = 6, Model = "", Description = "", ImageUrl = ""},
+
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await carService.Exists(1);
+
+            Assert.That(result, Is.True);
+
+            var result1 = await carService.Exists(7);
+            Assert.That(result1, Is.False);
 
         }
 
