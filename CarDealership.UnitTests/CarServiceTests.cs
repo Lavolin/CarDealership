@@ -206,17 +206,7 @@ namespace CarDealership.UnitTests
         }
 
         [Test]
-        public async Task TestDelete()
-        {
-
-        }
-
-
-        [Test]
-        public async Task TestIsBought()
-        {
-
-        }
+       
 
         [TearDown]
         public void TearDown()
