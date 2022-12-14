@@ -1,1 +1,1 @@
-ASP.NET Core project
+ASP.NET Core project demo.
